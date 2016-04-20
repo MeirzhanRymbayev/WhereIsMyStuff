@@ -1,12 +1,30 @@
 package com.kaspitask.model;
 
+import com.kaspitask.springsecurity.model.User;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "answer")
 public class Answer {
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "TEXT")
     private String text;
+
+    @Column(name = "DATE_OF_ANSWER")
     private Date dateOfAnswer;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
     public long getId() {

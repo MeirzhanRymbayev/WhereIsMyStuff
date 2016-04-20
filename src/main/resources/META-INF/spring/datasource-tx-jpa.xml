@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:tx="http://www.springframework.org/schema/tx"
@@ -14,39 +15,27 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-    <!--Бин dataSource. Мы объявляем источник данных со встроенной базой данных
-типа Н2. Поскольку это встроенная база данных, указывать имя для нее
-не требуется.-->
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:META-INF/sql/schema.sql"/>
         <jdbc:script location="classpath:META-INF/sql/test-data.sql"/>
     </jdbc:embedded-database>
 
-
-    <!--Объявляем бин менеджера транзакции-->
-    <!--Менеджер(диспетчер) транзакции для работы нуждается в менеджере сущности/диспетчер сущностей-->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
-    <!--Предназначен для поддержки объявления требований к установлению
-    границ транзакций с использованием аннотаций-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <!--LocalContainerEntityManagerFactoryBean.
-    Он поддерживает внедрение источника данных и может принимать участие как в
-    локальных, так и в глобальных транзакциях.-->
-    <!--для применения JPA в Spring необходимо
-    сконфигурировать EntityManagerFactory, как это делалось для SessionFactory
-    в Hibernate.-->
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
-        <property name="packagesToScan" value="com.apress.prospring4.ch8"/>
+        <property name="packagesToScan" value="com.kaspitask"/>
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
@@ -58,9 +47,11 @@
         </property>
     </bean>
 
-    <context:component-scan base-package="com.apress.prospring4.ch8"/>
+    <mvc:annotation-driven/>
 
-    <jpa:repositories base-package="com.apress.prospring4.ch8"
+    <context:component-scan base-package="com.kaspitask"/>
+
+    <jpa:repositories base-package="com.kaspitask"
                       entity-manager-factory-ref="emf"
                       transaction-manager-ref="transactionManager"/>
 </beans>

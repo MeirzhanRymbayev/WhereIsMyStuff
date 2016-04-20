@@ -1,0 +1,57 @@
+#askButton{
+    float: right;
+}
+
+#signIn{
+    float: right;
+}
+
+.separateLine{
+    border: 1px solid black;
+    width: auto;
+}
+
+#categories{
+    margin: 10px 0;
+}
+
+#content{
+    border:2px solid black;
+}
+
+.answersLabel {
+    float: left;
+}
+
+.questionTitle{
+    float: left;
+    margin-left: 250px;
+}
+
+.questionCategory{
+    margin-left: 150px;
+}
+
+.questionDate{
+    margin-right: 170px;
+    float: right;
+
+}
+
+.userName{
+    margin-right: 10px;
+    float: right;
+}
+
+.questionBlock{
+    padding: 15px 30px;
+}
+
+.questionDescription{
+    padding: 20px 30px;
+}
+
+.answers{
+    border: 2px solid black;
+    margin: 10px;
+}

@@ -1,13 +1,41 @@
 package com.kaspitask.model;
 
-import java.util.Date;
+import com.kaspitask.springsecurity.model.User;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "question")
 public class Question {
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "TITLE")
     private String title;
+
+    @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "DATE_OF_QUESTION")
     private Date dateOfQuestion;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "QUESTION_CATEGORY",
+            joinColumns = @JoinColumn(name = "QUESTION_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
+    private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Answer> answers = new HashSet<>();
 
     public long getId() {
         return id;
@@ -47,6 +75,22 @@ public class Question {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 
     @Override
